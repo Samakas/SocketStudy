@@ -56,29 +56,27 @@ Socket programming finds applications in various domains, including web developm
 ### Client
 ```
 import socket
+from datetime import datetime
 s=socket.socket()
 s.bind(('localhost',8000))
 s.listen(5)
 c,addr=s.accept()
-while True:
-i=input("Enter a data: ")
-c.send(i.encode())
+print("Client Address : ",addr)
+now = datetime.now()
+c.send(now.strftime("%d/%m/%Y %H:%M:%S").encode())
 ack=c.recv(1024).decode()
 if ack:
-print(ack)
-continue
-else:
-c.close()
-break
+    print(ack)
+    c.close()
 ```
 ### Server
 ```
 import socket
 s=socket.socket()
 s.connect(('localhost',8000))
-while True:
- print(s.recv(1024).decode())
- s.send("Acknowledgement Recived".encode())
+print(s.getsockname())
+print(s.recv(1024).decode())
+s.send("acknowledgement recived from the server".encode())
 ```
  ## Output
  ![output1](https://github.com/Samakas/SocketStudy/assets/154731670/a13f5692-6bdc-487e-81dc-d3ec041678b4)
